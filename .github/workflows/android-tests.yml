@@ -3,7 +3,7 @@ name: Tests
 # Trigger this workflow only when 'Build' completes successfully
 on:
   workflow_run:
-    workflows: ["Build"]
+    workflows: [ "Build" ]
     types:
       - completed
 
@@ -30,6 +30,9 @@ jobs:
           key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle.kts','**/gradle-wrapper.properties') }}
           restore-keys: |
             gradle-${{ runner.os }}-
+
+      - name: Ensure gradlew is executable
+        run: chmod +x ./gradlew
 
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest --no-daemon --stacktrace
