@@ -1,15 +1,16 @@
-name: Build
+name: Tests
 
+# Trigger this workflow only when 'Build' completes successfully
 on:
-  push:
-    branches: [ * ]
-  pull_request:
-    branches: [ * ]
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
 
 jobs:
-  build:
+  tests:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -20,7 +21,7 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Cache dependencies
+      - name: Cache Gradle
         uses: actions/cache@v3
         with:
           path: |
@@ -30,8 +31,5 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
 
-      - name: Ensure gradlew is executable
-        run: chmod +x ./gradlew
-
-      - name: Assemble Debug
-        run: ./gradlew assembleDebug --no-daemon --stacktrace
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest --no-daemon --stacktrace
