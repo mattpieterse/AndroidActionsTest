@@ -62,17 +62,26 @@ jobs:
         uses: android-actions/setup-android@v2
         with:
           api-level: 31
-          target: default
+          components: |
+            build-tools;31.0.0
+            platform-tools
+            emulator
+            platforms;android-31
           ndk: false
 
       - name: Accept SDK Licenses
         run: yes | sdkmanager --licenses
 
-      - name: Start emulator and run instrumentation tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 31
-          profile: "Pixel 2"
-          emulator-options: -no-window -no-audio
-          script: |
-            ./gradlew connectedDebugAndroidTest --no-daemon --stacktrace
+      - name: Install System Image
+        run: |
+          sdkmanager "system-images;android-31;google_apis;x86_64"
+
+      - name: Create and start emulator
+        run: |
+          echo "no" | avdmanager create avd -n test -k "system-images;android-31;google_apis;x86_64" --force
+          emulator -avd test -no-window -no-audio -no-boot-anim &
+          adb wait-for-device
+          sleep 30
+
+      - name: Run Instrumentation Tests
+        run: ./gradlew connectedDebugAndroidTest --no-daemon --stacktrace
