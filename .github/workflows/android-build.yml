@@ -2,9 +2,15 @@ name: Build
 
 on:
   push:
-    branches: [ * ]
+    branches:
+      - main
+      - staging
+      - 'topic/**'
   pull_request:
-    branches: [ * ]
+    branches:
+      - main
+      - staging
+      - 'topic/**'
 
 jobs:
   build:
