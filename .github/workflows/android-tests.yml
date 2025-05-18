@@ -44,11 +44,11 @@ jobs:
         run: ./gradlew testDebugUnitTest --no-daemon --stacktrace --info --console=plain
 
       - name: Publish test results
-        if: always()                # ensure report even on failures
+        if: always()  # so you see failures reported even when tests fail
         uses: dorny/test-reporter@v1
         with:
-          name: Unit Tests          # display name in Checks UI
-          path: app/build/test-results/testDebugUnitTest  # folder containing XMLs
-          reporter: junit           # format of your test‑result files
-          reporter_options: |
-            junit_simple_names=true # optional: simplify class names in report
+          name: Unit Tests                                  # label in Checks
+          path: app/build/test-results/testDebugUnitTest    # where Gradle writes XML
+          reporter: junit                                   # format parser
+          only-summary: false                               # show full suite/test annotations
+          max-annotations: 50                               # cap number of annotations
