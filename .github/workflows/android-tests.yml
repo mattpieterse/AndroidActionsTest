@@ -2,20 +2,24 @@ name: Tests
 
 # Trigger this workflow only when 'Build' completes successfully
 on:
-  workflow_run:
-    workflows: [ "Build" ]
-    types:
-      - completed
+  push:
+    branches:
+      - main
+      - staging
+      - 'topic/**'
+  pull_request:
+    branches:
+      - main
+      - staging
+      - 'topic/**'
 
 jobs:
-  test-units:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    
+  test-units:    
     name: Unit Tests
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v3
 
       - name: Set up JDK 17
@@ -24,7 +28,7 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Cache Gradle
+      - name: Cache dependencies
         uses: actions/cache@v3
         with:
           path: |
@@ -37,18 +41,15 @@ jobs:
       - name: Ensure gradlew is executable
         run: chmod +x ./gradlew
 
-      - name: Run Unit Tests
-        run: ./gradlew testDebugUnitTest --no-daemon --stacktrace
-        
-      - name: Run Unit Tests
-        run: ./gradlew testDebugUnitTest --no-daemon --stacktrace --info --console=plain
+      - name: Execute tests
+        run: ./gradlew test
 
-      - name: Publish test results
-        if: always()  # so you see failures reported even when tests fail
+      - name: Publish results
         uses: dorny/test-reporter@v1
+        if: always()  # so you see failures reported even when tests fail
         with:
           name: Unit Tests                                  # label in Checks
-          path: app/build/test-results/testDebugUnitTest    # where Gradle writes XML
+          path: '**/build/test-results/test/TEST*.xml'    # where Gradle writes XML
           reporter: java-junit                                   # format parser
+          fail-on-error: true
           only-summary: false                               # show full suite/test annotations
-          max-annotations: 50                               # cap number of annotations
