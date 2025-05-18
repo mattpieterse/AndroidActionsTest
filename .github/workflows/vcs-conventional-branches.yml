@@ -12,6 +12,7 @@ on:
 
 jobs:
   enforce-branch-name:
+    name: Conventional Branches
     runs-on: ubuntu-latest
     steps:
       - name: Validate branch name

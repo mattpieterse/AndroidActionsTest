@@ -48,12 +48,12 @@ jobs:
       - name: Execute tests
         run: ./gradlew test
 
-      - name: Publish results
-        uses: dorny/test-reporter@v2.1.0
-        if: always()  # so you see failures reported even when tests fail
-        with:
-          name: Unit Tests                                  # label in Checks
-          path: '**/build/test-results/test/TEST*.xml'    # where Gradle writes XML
-          reporter: java-junit                                   # format parser
-          fail-on-error: true
-          only-summary: false                               # show full suite/test annotations
+#      - name: Publish results
+#        uses: dorny/test-reporter@v2.1.0
+#        if: always()  # so you see failures reported even when tests fail
+#        with:
+#          name: Unit Tests                                  # label in Checks
+#          path: '**/build/test-results/test/TEST*.xml'    # where Gradle writes XML
+#          reporter: java-junit                                   # format parser
+#          fail-on-error: true
+#          only-summary: false                               # show full suite/test annotations
