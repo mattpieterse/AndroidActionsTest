@@ -20,7 +20,7 @@ jobs:
 
           echo "🔍 Checking branch name: $BRANCH_NAME"
 
-          # Define allowed patterns:
+          # Define allowed patterns for branch names:
           # - main
           # - staging
           # - topic/<lowercase-alphanum-and-dash>
