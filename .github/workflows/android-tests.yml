@@ -39,3 +39,16 @@ jobs:
 
       - name: Run Unit Tests
         run: ./gradlew testDebugUnitTest --no-daemon --stacktrace
+        
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest --no-daemon --stacktrace --info --console=plain
+
+      - name: Publish test results
+        if: always()                # ensure report even on failures
+        uses: dorny/test-reporter@v1
+        with:
+          name: Unit Tests          # display name in Checks UI
+          path: app/build/test-results/testDebugUnitTest  # folder containing XMLs
+          reporter: junit           # format of your test‑result files
+          reporter_options: |
+            junit_simple_names=true # optional: simplify class names in report
