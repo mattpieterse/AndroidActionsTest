@@ -23,7 +23,7 @@ jobs:
           # Define regex for conventional commits with optional scope and !
           REGEX='^(feat|fix|docs|style|refactor|test|chore|ci|build|perf|revert)(\([a-z0-9-]+\))?(!)?: .+'
 
-          echo "📋 Commit messages:"
+          echo "\n📋 Commit messages:"
           echo "--------------------------------------"
 
           VALID=true
