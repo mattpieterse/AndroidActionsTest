@@ -35,10 +35,10 @@ jobs:
             COMMIT_MSG="${line#*|}"
             COMMIT_MSG="$(echo "$COMMIT_MSG" | xargs)"  # trim spaces
 
-            echo "→ $COMMIT_MSG"
+            echo "✓ $COMMIT_MSG"
 
             if ! [[ "$COMMIT_MSG" =~ $REGEX ]]; then
-              echo "::error file=commit.txt,line=1::Invalid commit: \"$COMMIT_MSG\""
+              echo "⨯ $COMMIT_MSG"
               VALID=false
             fi
           done < commits.txt
@@ -46,8 +46,8 @@ jobs:
           echo "--------------------------------------------------"
 
           if [ "$VALID" = false ]; then
-            echo "❌ Some commit messages are invalid."
+            echo "Some commit messages are invalid."
             exit 1
           else
-            echo "✅ All commit messages passed."
+            echo "All commit messages passed."
           fi
