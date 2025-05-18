@@ -6,16 +6,21 @@ on:
       - main
       - staging
       - 'topic/**'
+      - 'refactor/**'
+      - 'test/**'
   pull_request:
     branches:
       - main
       - staging
       - 'topic/**'
+      - 'refactor/**'
+      - 'test/**'
 
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    permissions: write-all
 
     steps:
       - name: Checkout repository
