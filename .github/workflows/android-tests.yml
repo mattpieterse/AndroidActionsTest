@@ -49,6 +49,6 @@ jobs:
         with:
           name: Unit Tests                                  # label in Checks
           path: app/build/test-results/testDebugUnitTest    # where Gradle writes XML
-          reporter: junit                                   # format parser
+          reporter: java-junit                                   # format parser
           only-summary: false                               # show full suite/test annotations
           max-annotations: 50                               # cap number of annotations
