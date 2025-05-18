@@ -36,7 +36,7 @@ jobs:
             echo "→ $COMMIT_MSG"
 
             if ! [[ "$COMMIT_MSG" =~ $REGEX ]]; then
-              echo "::error file=commit.txt,line=1::❌ Invalid commit: \"$COMMIT_MSG\""
+              echo "::error file=commit.txt,line=1::Invalid commit: \"$COMMIT_MSG\""
               VALID=false
             fi
           done < commits.txt
