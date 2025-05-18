@@ -1,7 +1,7 @@
 name: Enforce Commit Message Format
 
 on:
-  push:  # Run on every push to any branch
+  push:  # Apply to all branches
 
 jobs:
   check-commit-messages:
@@ -11,33 +11,41 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Required for full commit diff
+          fetch-depth: 0
 
-      - name: Get and validate commit messages
+      - name: Validate commit messages
         run: |
           echo "🔍 Checking commits between ${{ github.event.before }} and ${{ github.sha }}..."
 
-          git log --pretty=format:'%h|%s' ${{ github.event.before }}..${{ github.sha }} > commits.txt
+          # Get commit messages in range
+          git log --format='%H|%s' ${{ github.event.before }}..${{ github.sha }} > commits.txt
 
-          echo "📋 Validating commit message format..."
+          # Define regex for conventional commits with optional scope and !
+          REGEX='^(feat|fix|docs|style|refactor|test|chore|ci|build|perf|revert)(\([a-z0-9-]+\))?(!)?: .+'
+
+          echo "📋 Commit messages:"
+          echo "--------------------------------------"
+
           VALID=true
 
           while IFS= read -r line; do
-            COMMIT_HASH=$(echo "$line" | cut -d'|' -f1)
-            COMMIT_MSG=$(echo "$line" | cut -d'|' -f2- | xargs)  # Trim leading/trailing space
+            COMMIT_HASH="${line%%|*}"
+            COMMIT_MSG="${line#*|}"
+            COMMIT_MSG="$(echo "$COMMIT_MSG" | xargs)"  # trim spaces
 
-            echo "→ [$COMMIT_HASH] $COMMIT_MSG"
+            echo "→ $COMMIT_MSG"
 
-            # Regex: conventional commits with optional scope + optional ! + colon + space + message
-            if [[ ! "$COMMIT_MSG" =~ ^(feat|fix|docs|style|refactor|test|chore|ci|build|perf|revert)(\([a-z0-9-]+\))?(!)?:\ .+ ]]; then
-              echo "::error file=commits.txt,line=1::❌ Invalid commit message: \"$COMMIT_MSG\""
+            if ! [[ "$COMMIT_MSG" =~ $REGEX ]]; then
+              echo "::error file=commit.txt,line=1::❌ Invalid commit: \"$COMMIT_MSG\""
               VALID=false
             fi
           done < commits.txt
 
-          if [ "$VALID" = false ]; then
-            echo "❌ One or more commit messages are invalid."
-            exit 1
-          fi
+          echo "--------------------------------------"
 
-          echo "✅ All commit messages are valid."
+          if [ "$VALID" = false ]; then
+            echo "❌ Some commit messages are invalid."
+            exit 1
+          else
+            echo "✅ All commit messages passed."
+          fi
