@@ -15,6 +15,7 @@ jobs:
 
       - name: Validate commit messages
         run: |
+          # Validate
           echo "🔍 Checking commits between ${{ github.event.before }} and ${{ github.sha }}..."
 
           # Get commit messages in range
@@ -23,8 +24,9 @@ jobs:
           # Define regex for conventional commits with optional scope and !
           REGEX='^(feat|fix|docs|style|refactor|test|chore|ci|build|perf|revert)(\([a-z0-9-]+\))?(!)?: .+'
 
-          echo "\n📋 Commit messages:"
-          echo "--------------------------------------"
+          echo "                                                  "
+          echo "Log:                                              "
+          echo "--------------------------------------------------"
 
           VALID=true
 
@@ -41,7 +43,7 @@ jobs:
             fi
           done < commits.txt
 
-          echo "--------------------------------------"
+          echo "--------------------------------------------------"
 
           if [ "$VALID" = false ]; then
             echo "❌ Some commit messages are invalid."
