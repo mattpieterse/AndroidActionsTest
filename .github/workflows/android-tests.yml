@@ -1,26 +1,26 @@
 name: Tests
 
-# Trigger this workflow only when 'Build' completes successfully
 on:
   push:
     branches:
       - main
       - staging
       - 'topic/**'
-      - 'refactor/**'
-      - 'test/**'
+      - 'rollback/**'
+      - 'debug/**'
   pull_request:
     branches:
       - main
       - staging
       - 'topic/**'
-      - 'refactor/**'
-      - 'test/**'
+      - 'rollback/**'
+      - 'debug/**'
 
 jobs:
   test-units:    
     name: Unit Tests
     runs-on: ubuntu-latest
+    permissions: write-all
     
     steps:
       - name: Checkout

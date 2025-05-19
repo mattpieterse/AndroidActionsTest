@@ -6,15 +6,15 @@ on:
       - main
       - staging
       - 'topic/**'
-      - 'refactor/**'
-      - 'test/**'
+      - 'rollback/**'
+      - 'debug/**'
   pull_request:
     branches:
       - main
       - staging
       - 'topic/**'
-      - 'refactor/**'
-      - 'test/**'
+      - 'rollback/**'
+      - 'debug/**'
 
 jobs:
   build:
