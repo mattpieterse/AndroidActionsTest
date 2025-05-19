@@ -1,5 +1,13 @@
 name: Tests
 
+# - About ----------------------------------------------------------------------
+# CI/CD GitHub Action to ensure that unit tests pass successfully.
+#
+# The workflow will automate the execution of unit tests in the repository when
+# code is pushed to the agreed upon conventional branches or pull requests have
+# been submitted on the remote to the aforementioned branches.
+# ------------------------------------------------------------------------------
+
 on:
   push:
     branches:
@@ -17,7 +25,7 @@ on:
       - 'debug/**'
 
 jobs:
-  test-units:    
+  execute:    
     name: Unit Tests
     runs-on: ubuntu-latest
     permissions: write-all

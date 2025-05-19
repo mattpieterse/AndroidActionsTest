@@ -1,5 +1,13 @@
 name: Build
 
+# - About ----------------------------------------------------------------------
+# CI/CD GitHub Action to ensure that the application compiles successfully.
+#
+# The workflow will automate the compilation of the application using the debug
+# configuration to ensure that the remote contains a working copy of the source
+# code at all times. This prevents conflicts and blockers.
+# ------------------------------------------------------------------------------
+
 on:
   push:
     branches:
@@ -17,7 +25,7 @@ on:
       - 'debug/**'
 
 jobs:
-  build:
+  execute:
     name: Build Application
     runs-on: ubuntu-latest
     permissions: write-all
