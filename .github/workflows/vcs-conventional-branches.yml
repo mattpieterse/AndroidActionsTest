@@ -1,12 +1,8 @@
-name: Enforce Branch Naming Convention
+name: Enforce Conventions
 
 on:
   push:
     branches-ignore:
-      - main
-      - staging
-  pull_request:
-    branches:
       - main
       - staging
 
@@ -15,26 +11,22 @@ jobs:
     name: Conventional Branches
     runs-on: ubuntu-latest
     steps:
-      - name: Validate branch name
+      - name: Lint against allowed conventions
         run: |
           BRANCH_NAME="${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
 
-          echo "🔍 Checking branch name: $BRANCH_NAME"
-
-          # Define allowed patterns:
-          # - main
-          # - staging
-          # - topic/<lowercase-alphanum-and-dash>
-          # - rollback/<lowercase-alphanum-and-dash>
-          if [[ "$BRANCH_NAME" =~ ^(main|staging|topic\/[a-z0-9-]+|rollback\/[a-z0-9-]+)$ ]]; then
+          echo "🔍 Validating branch: $BRANCH_NAME"
+          
+          if [[ "$BRANCH_NAME" =~ ^(main|staging|topic\/[a-z0-9-]+|rollback\/[a-z0-9-]+|debug\/[a-z0-9-]+)$ ]]; then
             echo "✅ Branch name '$BRANCH_NAME' is valid."
             exit 0
           else
-            echo "❌ Invalid branch name: '$BRANCH_NAME'"
-            echo "Allowed patterns are:"
-            echo "  - main"
-            echo "  - staging"
-            echo "  - topic/<lowercase-name> (letters, numbers, dashes only)"
-            echo "  - rollback/<lowercase-name> (letters, numbers, dashes only)"
+            echo "❌ Invalid branch name: '$BRANCH_NAME'                  "
+            echo "Allowed conventions:                                    "
+            echo "  - main                                                "
+            echo "  - staging                                             "
+            echo "  - topic/<lowercase-name> (letters, numbers, dashes)   "
+            echo "  - debug/<lowercase-name> (letters, numbers, dashes)   "
+            echo "  - rollback/<lowercase-name> (letters, numbers, dashes)"
             exit 1
           fi
