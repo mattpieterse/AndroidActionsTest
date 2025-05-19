@@ -18,12 +18,12 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build Application
     runs-on: ubuntu-latest
     permissions: write-all
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v3
 
       - name: Set up JDK 17
@@ -45,5 +45,5 @@ jobs:
       - name: Ensure gradlew is executable
         run: chmod +x ./gradlew
 
-      - name: Assemble Debug
+      - name: Assemble (Debug)
         run: ./gradlew assembleDebug --no-daemon --stacktrace
