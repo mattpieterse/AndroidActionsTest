@@ -18,7 +18,7 @@ jobs:
           echo "🔍 Validating branch: $BRANCH_NAME"
           
           if [[ "$BRANCH_NAME" =~ ^(main|staging|topic\/[a-z0-9-]+|rollback\/[a-z0-9-]+|debug\/[a-z0-9-]+)$ ]]; then
-            echo "✅ Branch name '$BRANCH_NAME' is valid."
+            echo "✅ Follows accepted conventions."
             exit 0
           else
             echo "❌ Invalid branch name: '$BRANCH_NAME'                  "
