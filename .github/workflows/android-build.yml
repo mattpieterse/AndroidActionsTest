@@ -14,6 +14,7 @@ on:
       - main
       - staging
       - 'topic/**'
+      - 'tests/**'
       - 'rollback/**'
       - 'debug/**'
   pull_request:
@@ -21,6 +22,7 @@ on:
       - main
       - staging
       - 'topic/**'
+      - 'tests/**'
       - 'rollback/**'
       - 'debug/**'
 
